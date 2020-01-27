@@ -10,3 +10,4 @@ edition = "2018"
 rocket = "*"
 rocket_contrib = { version = "*", features = ["json"] }
 serde = { version = "*", features = ["derive"] }
+diesel = { version = "*", features = ["sqlite"] }

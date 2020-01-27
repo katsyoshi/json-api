@@ -9,7 +9,6 @@ use rocket_contrib::json::Json;
 mod models;
 use models::Hello;
 
-
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
