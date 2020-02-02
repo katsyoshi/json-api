@@ -32,7 +32,7 @@ fn index() -> &'static str {
 
 #[get("/hello?<name>")]
 fn hello(name: &RawStr) -> Json<Hello> {
-    Json(Hello { hello: name.as_str().to_string() })
+    Json(Hello { hello: name.to_string() })
 }
 
 #[get("/name?<user_name>")]
