@@ -6,6 +6,8 @@ extern crate rocket;
 use rocket::http::RawStr;
 use rocket_contrib::json::Json;
 
+use json_api::models::User;
+use json_api::models::hello::Hello;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -19,18 +21,10 @@ fn hello(name: &RawStr) -> Json<Hello> {
 
 #[get("/name?<user_name>")]
 fn user(user_name: &RawStr) -> Json<User> {
-    use schema::users::dsl::*;
-    let conn = establish_connection();
-    let u = users
-        .filter(name.eq(user_name.to_string()))
-        .filter(published.eq(true))
-        .first::<User>(&conn)
-        .expect("Error finding posts");
+    let u = User::find_by_name(user_name.to_string());
     Json(u)
 }
 
 fn main() {
-    rocket::ignite()
-        .mount("/", routes![index, hello, user])
-        .launch();
+    rocket::ignite().mount("/", routes![index, hello, user]).launch();
 }
