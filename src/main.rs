@@ -1,29 +1,11 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use]
-extern crate diesel;
-#[macro_use]
 extern crate rocket;
 
-use diesel::prelude::*;
-use dotenv::dotenv;
 use rocket::http::RawStr;
 use rocket_contrib::json::Json;
-use std::env;
 
-pub mod schema;
-pub mod models;
-
-use models::*;
-
-pub fn establish_connection() -> SqliteConnection {
-    dotenv().ok();
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    SqliteConnection::establish(&database_url).expect(&format!(
-        "Error connecting to {}",
-        database_url
-    ))
-}
 
 #[get("/")]
 fn index() -> &'static str {
