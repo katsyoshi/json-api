@@ -1,12 +1,20 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
-#[macro_use]
-extern crate rocket;
+#![feature(custom_inner_attributes)]
+extern crate json_api;
 
 mod routes;
+use actix_web::{App, HttpServer};
 
-use routes::*;
-
-fn main() {
-    rocket::ignite().mount("/", routes![index, hello, user]).launch();
+#[actix_rt::main]
+async fn main() -> std::io::Result<()>{
+    HttpServer::new(
+        move || {
+            App::new()
+                .configure(routes::users)
+                .configure(routes::top)
+        })
+        .workers(64)
+        .bind("0.0.0.0:8001")
+        .unwrap()
+        .run()
+        .await
 }
